@@ -2,11 +2,13 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 MAVEN_WRAPPER_DIR="$( dirname "${CURRENT_DIR}" )"
 ARG="$1"
-if [ -z "${ARG}" ]; then
-  echo "there are some arguments required"
-  echo "example:"
+if [ "$#" -lt 1 ] || [ -z "$1" ] ; then
+  echo "arguments required, examples:"
   echo "$0 mysql"
+  echo "$0 mysql consul rabbitmq"
   # echo "${CURRENT_DIR}/up mysql"
-else
-  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D up=${ARG}"
+  exit 1
 fi
+for i in "$@" ; do
+  bash -c "cd ${MAVEN_WRAPPER_DIR} && ./mvnw --quiet -D up=$i"
+done

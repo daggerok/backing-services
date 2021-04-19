@@ -9,35 +9,21 @@
   <packaging>pom</packaging>
   <properties>
     <java.version>1.8</java.version>
+    <docker.project>dev</docker.project>
+    <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <docker-compose-maven-plugin.version>4.0.0</docker-compose-maven-plugin.version>
   </properties>
   <build>
     <defaultGoal>initialize</defaultGoal>
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>com.dkanejs.maven.plugins</groupId>
-          <artifactId>docker-compose-maven-plugin</artifactId>
-          <version>${docker-compose-maven-plugin.version}</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${exec-maven-plugin.version}</version>
           <configuration>
-            <detachedMode>true</detachedMode>
-            <removeVolumes>true</removeVolumes>
-            <removeOrphans>true</removeOrphans>
-            <removeImages>true</removeImages>
-            <removeImagesType>local</removeImagesType>
-            <build>true</build>
-            <detail>true</detail>
-            <verbose>false</verbose>
-            <ignorePullFailures>true</ignorePullFailures>
-            <buildArgs>
-              <forceRm>true</forceRm>
-              <noCache>true</noCache>
-              <alwaysPull>true</alwaysPull>
-            </buildArgs>
-            <projectName>dev</projectName>
-            <!--<projectName>backing-services</projectName>-->
+            <workingDirectory>${project.basedir}/src</workingDirectory>
           </configuration>
         </plugin>
       </plugins>
@@ -52,16 +38,23 @@
         </property>
       </activation>
       <build>
-        <defaultGoal>docker-compose:up</defaultGoal>
+        <defaultGoal>exec:exec</defaultGoal>
         <plugins>
           <plugin>
-            <groupId>com.dkanejs.maven.plugins</groupId>
-            <artifactId>docker-compose-maven-plugin</artifactId>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
             <configuration>
-              <composeFiles>
-                <composeFile>${project.basedir}/src/docker-compose-${up}.yaml</composeFile>
-                <!--<composeFile>${project.basedir}/src/docker-compose-${up}-override.yaml</composeFile>-->
-              </composeFiles>
+              <executable>docker</executable>
+              <arguments>
+                <argument>compose</argument>
+                <argument>-f</argument>
+                <argument>docker-compose-${up}.yaml</argument>
+                <argument>-p</argument>
+                <argument>${docker.project}</argument>
+                <argument>up</argument>
+                <argument>-d</argument>
+                <argument>--build</argument>
+              </arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -75,17 +68,27 @@
         </property>
       </activation>
       <build>
-        <defaultGoal>docker-compose:down</defaultGoal>
+        <defaultGoal>exec:exec</defaultGoal>
         <plugins>
           <plugin>
-            <groupId>com.dkanejs.maven.plugins</groupId>
-            <artifactId>docker-compose-maven-plugin</artifactId>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
             <configuration>
-              <composeFiles>
-                <composeFile>${project.basedir}/src/docker-compose-${down}.yaml</composeFile>
-                <!--<composeFile>${project.basedir}/src/docker-compose-${down}-override.yaml</composeFile>-->
-              </composeFiles>
-              <detachedMode>false</detachedMode>
+              <executable>docker</executable>
+              <arguments>
+                <argument>compose</argument>
+                <argument>-f</argument>
+                <argument>docker-compose-${down}.yaml</argument>
+                <argument>-p</argument>
+                <argument>${docker.project}</argument>
+                <argument>down</argument>
+                <argument>-v</argument>
+                <argument>--remove-orphans</argument>
+                <argument>--rmi</argument>
+                <argument>local</argument>
+                <argument>-t</argument>
+                <argument>25</argument>
+              </arguments>
             </configuration>
           </plugin>
         </plugins>

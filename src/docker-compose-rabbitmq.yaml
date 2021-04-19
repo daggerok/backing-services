@@ -1,18 +1,18 @@
 version: '2.1'
 networks:
   rabbitmq.localnet:
-volumes:
-  rabbitmq.data:
 services:
   rabbitmq:
     build: ./rabbitmq
     networks: [ rabbitmq.localnet ]
-    volumes:
-    - 'rabbitmq.data:/var/lib/rabbitmq'
-    - 'rabbitmq.data:/etc/rabbitmq'
     ports:
     - '5672:5672'
     - '15672:15672'
     environment:
       RABBITMQ_USERNAME: guest
       RABBITMQ_PASSWORD: guest
+    #volumes:
+    #- 'rabbitmq.data:/var/lib/rabbitmq'
+    #- 'rabbitmq.data:/etc/rabbitmq'
+#volumes:
+#  rabbitmq.data:

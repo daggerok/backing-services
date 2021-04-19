@@ -2,10 +2,12 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 MAVEN_WRAPPER_DIR="$( dirname "${CURRENT_DIR}" )"
 ARG="$1"
-if [ -z "${ARG}" ]; then
-  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=consul"
-  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=mysql"
-  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=rabbitmq"
+if [ "$#" -lt 1 ] || [ -z "$1" ] ; then
+  for i in $(docker ps -a -q) ; do
+    bash -c "docker rm -f -v $i"
+  done
 else
-  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=${ARG}"
+  for i in "$@" ; do
+    bash -c "cd ${MAVEN_WRAPPER_DIR} && ./mvnw --quiet -D down=$i"
+  done
 fi
