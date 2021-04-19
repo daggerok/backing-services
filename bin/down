@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+MAVEN_WRAPPER_DIR="$( dirname "${CURRENT_DIR}" )"
+ARG="$1"
+if [ -z "${ARG}" ]; then
+  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=consul"
+  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=mysql"
+  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=rabbitmq"
+else
+  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D down=${ARG}"
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+MAVEN_WRAPPER_DIR="$( dirname "${CURRENT_DIR}" )"
+ARG="$1"
+if [ -z "${ARG}" ]; then
+  echo "there are some arguments required"
+  echo "example:"
+  echo "$0 mysql"
+  # echo "${CURRENT_DIR}/up mysql"
+else
+  bash -c "${MAVEN_WRAPPER_DIR}/mvnw -D up=${ARG}"
+fi
