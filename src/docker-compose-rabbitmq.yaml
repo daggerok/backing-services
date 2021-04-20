@@ -1,6 +1,7 @@
 version: '2.1'
 networks:
   rabbitmq.localnet:
+    driver: bridge
 services:
   rabbitmq:
     build: ./rabbitmq
@@ -8,11 +9,8 @@ services:
     ports:
     - '5672:5672'
     - '15672:15672'
-    environment:
-      RABBITMQ_USERNAME: guest
-      RABBITMQ_PASSWORD: guest
-    #volumes:
-    #- 'rabbitmq.data:/var/lib/rabbitmq'
-    #- 'rabbitmq.data:/etc/rabbitmq'
+#    volumes:
+#    - 'rabbitmq.data:/bitnami'
 #volumes:
 #  rabbitmq.data:
+#    driver: local

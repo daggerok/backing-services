@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ "$#" -lt 1 ] || [ -z "$1" ] ; then
+	echo "arguments required, examples:"
+  echo "$0 dev_rabbitmq_1"
+  echo "$0 -f -t dev_mysql_1"
+  exit 1
+fi
+bash -c "docker logs $*"

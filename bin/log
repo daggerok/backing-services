@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ARG=$1
+if [ "$#" -ne 1 ] || [ -z "$ARG" ] ; then
+	echo "arguments required, examples:"
+  echo "$0 rabbitmq"
+  echo "$0 mysql"
+  exit 1
+fi
+bash -c "$CURRENT_DIR/logs -f -t dev_${ARG}_1"
